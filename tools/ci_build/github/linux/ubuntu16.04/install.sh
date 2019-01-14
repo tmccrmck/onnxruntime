@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 DEBIAN_FRONTEND=noninteractive
+aria2c -q -d /tmp https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
+dpkg -i /tmp/packages-microsoft-prod.deb
 apt-get update && apt-get install -y --no-install-recommends \
         autotools-dev \
         build-essential \
@@ -27,7 +29,8 @@ apt-get update && apt-get install -y --no-install-recommends \
         bzip2 \
         unzip \
         rsync libunwind8 \
-        python3-setuptools python3-numpy python3-wheel python python3-pip
+        python3-setuptools python3-numpy python3-wheel python python3-pip \
+        dotnet-sdk-2.2
 
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
