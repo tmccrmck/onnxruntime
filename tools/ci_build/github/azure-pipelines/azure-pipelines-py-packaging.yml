@@ -1,55 +1,4 @@
 jobs:
-
-- job: Windows_py_Wheels
-  pool: Win-CPU
-  strategy:
-    matrix:
-      Python35:
-        python.version: '3.5'
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-
-  variables:
-    buildDirectory: '$(Build.SourcesDirectory)\build'
-  steps:
-    - task: CondaEnvironment@1
-      inputs:
-        createCustomEnvironment: true
-        environmentName: 'py$(python.version)'
-        packageSpecs: 'python=$(python.version)'
-        cleanEnvironment: true
-
-    - task: BatchScript@1
-      displayName: 'Run build script'
-      inputs:
-        filename: 'build.bat'
-        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --use_mkldnn'
-        workingFolder: "$(Build.SourcesDirectory)"
-
-    - task: CopyFiles@2
-      displayName: 'Copy Python Wheel to: $(Build.ArtifactStagingDirectory)'
-      inputs:
-        SourceFolder: '$(buildDirectory)'
-        Contents: '**\dist\onnxruntime-*.whl'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: ONNXRuntime python wheel'
-      inputs:
-        ArtifactName: onnxruntime
-
-    - task: CmdLine@1
-      displayName: 'Deactivating Conda Environment'
-      inputs:
-        filename: deactivate
-      continueOnError: true
-      condition: always()
-
-    - template: templates/clean-agent-build-directory-step.yml
-
-
 - job: Windows_py_Wheels_x86
   pool: Win-CPU
   strategy:
@@ -71,7 +20,7 @@ jobs:
       displayName: 'Run build script'
       inputs:
         filename: 'build.bat'
-        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --use_mkldnn --x86'
+        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --x86'
         workingFolder: "$(Build.SourcesDirectory)"
 
     - task: CopyFiles@2
