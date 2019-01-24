@@ -42,7 +42,7 @@ jobs:
       continueOnError: true
       condition: always()
 
-    - task: CmdLine@1
+    - task: CmdLine@2
       displayName: 'Clean conda 32 bit config'
       inputs:
         script: 'set CONDA_FORCE_32BIT='
