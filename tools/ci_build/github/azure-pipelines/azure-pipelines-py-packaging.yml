@@ -12,7 +12,7 @@ jobs:
       Python37:
         python.version: '3.7'
       Python36-x86:
-        CONDA_FORCE_32BIT=1
+        CONDA_FORCE_32BIT: '1'
         python.version: '3.6'
   variables:
     buildDirectory: '$(Build.SourcesDirectory)\build'
