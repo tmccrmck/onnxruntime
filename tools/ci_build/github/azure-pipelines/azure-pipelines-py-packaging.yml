@@ -20,7 +20,7 @@ jobs:
       displayName: 'Run build script'
       inputs:
         filename: 'build.bat'
-        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --x86'
+        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --use_mkldnn --x86'
         workingFolder: "$(Build.SourcesDirectory)"
 
     - task: CopyFiles@2
@@ -43,9 +43,9 @@ jobs:
       condition: always()
 
     - task: CmdLine@1
-      displayName: 'Clean 32 conda 32 bit config'
+      displayName: 'Clean conda 32 bit config'
       inputs:
-        filename: set CONDA_FORCE_32BIT=
+        script: 'set CONDA_FORCE_32BIT='
       continueOnError: true
       condition: always()
 
