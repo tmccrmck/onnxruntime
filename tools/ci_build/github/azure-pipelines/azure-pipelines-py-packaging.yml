@@ -1,6 +1,5 @@
 jobs:
 
-
 - job: Windows_py_Wheels
   pool: Win-CPU
   strategy:
@@ -11,9 +10,7 @@ jobs:
         python.version: '3.6'
       Python37:
         python.version: '3.7'
-      Python36-x86:
-        CONDA_FORCE_32BIT: '1'
-        python.version: '3.6'
+
   variables:
     buildDirectory: '$(Build.SourcesDirectory)\build'
   steps:
@@ -50,13 +47,58 @@ jobs:
       continueOnError: true
       condition: always()
 
+    - template: templates/clean-agent-build-directory-step.yml
+
+
+- job: Windows_py_Wheels_x86
+  pool: Win-CPU
+  strategy:
+    matrix:
+      Python36-x86:
+        python.version: '3.6'
+  variables:
+    buildDirectory: '$(Build.SourcesDirectory)\build'
+    CONDA_FORCE_32BIT: '1'
+  steps:
+    - task: CondaEnvironment@1
+      inputs:
+        createCustomEnvironment: true
+        environmentName: 'x86py$(python.version)'
+        packageSpecs: 'python=$(python.version)'
+        cleanEnvironment: true
+
+    - task: BatchScript@1
+      displayName: 'Run build script'
+      inputs:
+        filename: 'build.bat'
+        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --use_mkldnn'
+        workingFolder: "$(Build.SourcesDirectory)"
+
+    - task: CopyFiles@2
+      displayName: 'Copy Python Wheel to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        SourceFolder: '$(buildDirectory)'
+        Contents: '**\dist\onnxruntime-*.whl'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: ONNXRuntime python wheel'
+      inputs:
+        ArtifactName: onnxruntime
+
+    - task: CmdLine@1
+      displayName: 'Deactivating Conda Environment'
+      inputs:
+        filename: deactivate
+      continueOnError: true
+      condition: always()
+
     - task: CmdLine@1
       displayName: 'Clean 32 conda 32 bit config'
       inputs:
-        filename: 'set CONDA_FORCE_32BIT='
+        filename: set CONDA_FORCE_32BIT=
       continueOnError: true
       condition: always()
 
     - template: templates/clean-agent-build-directory-step.yml
-
 
