@@ -50,6 +50,13 @@ jobs:
       continueOnError: true
       condition: always()
 
+    - task: CmdLine@1
+      displayName: 'Clean 32 conda 32 bit config'
+      inputs:
+        filename: 'set CONDA_FORCE_32BIT='
+      continueOnError: true
+      condition: always()
+
     - template: templates/clean-agent-build-directory-step.yml
 
 
