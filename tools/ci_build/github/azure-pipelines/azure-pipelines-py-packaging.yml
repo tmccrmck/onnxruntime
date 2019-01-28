@@ -20,7 +20,7 @@ jobs:
       displayName: 'Run build script'
       inputs:
         filename: 'build.bat'
-        arguments: ' --build_dir $(buildDirectory) --config Release --build_wheel --x86'
+        arguments: '--use_openblas --build_dir $(buildDirectory) --config Release --build_wheel --x86'
         workingFolder: "$(Build.SourcesDirectory)"
 
     - task: CopyFiles@2
