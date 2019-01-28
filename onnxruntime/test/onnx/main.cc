@@ -203,10 +203,7 @@ int real_main(int argc, char* argv[]) {
       sf.DisableSequentialExecution();
     if (enable_cuda) {
 #ifdef USE_CUDA
-      OrtProviderFactoryInterface** f;
-      ORT_THROW_ON_ERROR(OrtCreateCUDAExecutionProviderFactory(0, &f));
-      sf.AppendExecutionProvider(f);
-      OrtReleaseObject(f);
+      ORT_THROW_ON_ERROR(OrtSessionOptionsAppendExecutionProvider_CUDA(sf, 0));
 #else
       fprintf(stderr, "CUDA is not supported in this build");
       return -1;
@@ -214,10 +211,7 @@ int real_main(int argc, char* argv[]) {
     }
     if (enable_nuphar) {
 #ifdef USE_NUPHAR
-      OrtProviderFactoryInterface** f;
-      ORT_THROW_ON_ERROR(OrtCreateNupharExecutionProviderFactory(0, "", &f));
-      sf.AppendExecutionProvider(f);
-      OrtReleaseObject(f);
+      ORT_THROW_ON_ERROR(OrtSessionOptionsAppendExecutionProvider_Nuphar(sf, 0, ""));
 #else
       fprintf(stderr, "Nuphar is not supported in this build");
       return -1;
@@ -225,10 +219,7 @@ int real_main(int argc, char* argv[]) {
     }
     if (enable_mkl) {
 #ifdef USE_MKLDNN
-      OrtProviderFactoryInterface** f;
-      ORT_THROW_ON_ERROR(OrtCreateMkldnnExecutionProviderFactory(enable_cpu_mem_arena ? 1 : 0, &f));
-      sf.AppendExecutionProvider(f);
-      OrtReleaseObject(f);
+      ORT_THROW_ON_ERROR(OrtSessionOptionsAppendExecutionProvider_Mkldnn(sf, enable_cpu_mem_arena ? 1 : 0));
 #else
       fprintf(stderr, "MKL-DNN is not supported in this build");
       return -1;
@@ -344,14 +335,7 @@ int real_main(int argc, char* argv[]) {
       {"cast_FLOAT_to_STRING", "Cast opset 9 not supported yet"},
       {"cast_FLOAT_to_FLOAT16", "Cast opset 9 not supported yet"},
       {"cast_FLOAT16_to_DOUBLE", "Cast opset 9 not supported yet"},
-      {"nonzero_example", "NonZero opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_uniandbigrams_skip5", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_batch_onlybigrams_skip0", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_onlybigrams_skip5", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_only_bigrams_skip0", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_onlybigrams_levelempty", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_batch_uniandbigrams_skip5", "TfIdfVectorizer opset 9 not supported yet"},
-      {"tfidfvectorizer_tf_batch_onlybigrams_skip5", "TfIdfVectorizer opset 9 not supported yet"}};
+      {"nonzero_example", "NonZero opset 9 not supported yet"}};
 
 #ifdef USE_CUDA
   broken_tests["maxpool_2d_default"] = "cudnn pooling only support input dimension >= 3";
