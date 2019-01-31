@@ -36,6 +36,7 @@ else
   #bae6333e149a59a3faa9c4d9c44974373dcf5256 is v1.3.0
   #dbf3581835e3a05716e10587511d7ab3b2cdc386 is v1.3.0 latest
   for onnx_version in "5af210ca8a1c73aa6bae8754c9346ec54d0a756e" "bae6333e149a59a3faa9c4d9c44974373dcf5256" "dbf3581835e3a05716e10587511d7ab3b2cdc386"; do
+    set -x
     if [ -z ${lastest_onnx_version+x} ]; then
       echo "first pass";
     else
@@ -46,11 +47,14 @@ else
     aria2c -q -d /tmp/src  https://github.com/onnx/onnx/archive/$onnx_version.tar.gz
     tar -xf /tmp/src/onnx-$onnx_version.tar.gz -C /tmp/src
     cd /tmp/src/onnx-$onnx_version
+    pwd
     git clone https://github.com/pybind/pybind11.git third_party/pybind11
+    echo "installed"
     python3 setup.py bdist_wheel
     pip3 install -q dist/*
     mkdir -p /data/onnx/$onnx_version
     backend-test-tools generate-data -o /data/onnx/$onnx_version
+    set +x
   done
 fi
 
