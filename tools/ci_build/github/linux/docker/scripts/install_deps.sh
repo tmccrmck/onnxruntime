@@ -49,9 +49,10 @@ else
     cd /tmp/src/onnx-$onnx_version
     pwd
     git clone https://github.com/pybind/pybind11.git third_party/pybind11
-    echo "installed"
     python3 setup.py bdist_wheel
-    pip3 install -q dist/*
+    echo "installed"
+    ls dist/*
+    pip3 install -v dist/*
     mkdir -p /data/onnx/$onnx_version
     backend-test-tools generate-data -o /data/onnx/$onnx_version
     set +x
