@@ -6,10 +6,6 @@ jobs:
     CUDA_VERSION: '9.1'
   strategy:
     matrix:
-      Python35:
-        python.version: '3.5'
-      Python36:
-        python.version: '3.6'
       Python37:
         python.version: '3.7'
   steps:
