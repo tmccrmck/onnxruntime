@@ -229,6 +229,9 @@ TEST_F(CApiTest, create_tensor_with_data) {
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   int ret = RUN_ALL_TESTS();
+  //Linker on Mac is kind of strange
+#ifndef __APPLE__
   ::google::protobuf::ShutdownProtobufLibrary();
+#endif
   return ret;
 }
