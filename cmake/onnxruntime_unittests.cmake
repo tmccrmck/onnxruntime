@@ -482,13 +482,6 @@ if (onnxruntime_BUILD_SHARED_LIB)
           ${ONNXRUNTIME_SHARED_LIB_TEST_SRC_DIR}/test_allocator.cc
           ${ONNXRUNTIME_SHARED_LIB_TEST_SRC_DIR}/test_inference.cc
           ${ONNXRUNTIME_SHARED_LIB_TEST_SRC_DIR}/test_nontensor_types.cc)
-  if(onnxruntime_RUN_ONNX_TESTS)
-    list(APPEND onnxruntime_shared_lib_test_SRC ${ONNXRUNTIME_SHARED_LIB_TEST_SRC_DIR}/test_io_types.cc)
-  endif()
-  if (NOT(${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
-    #our CI build machine doesn't have enough memory for this test
-    list(APPEND onnxruntime_shared_lib_test_SRC ${ONNXRUNTIME_SHARED_LIB_TEST_SRC_DIR}/test_tensor_loader.cc)
-  endif()
   AddTest(DYN
           TARGET onnxruntime_shared_lib_test
           SOURCES ${onnxruntime_shared_lib_test_SRC}
