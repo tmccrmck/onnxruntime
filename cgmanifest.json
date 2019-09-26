@@ -419,6 +419,15 @@
             },
             "comments": "used by onnxruntime"
          }
+      },
+      {
+         "component": {
+            "git": {
+               "commitHash": "d83dd68e496e024ae0f1f0c19ac2ab0d27330330",
+               "repositoryUrl": "https://github.com/jupp0r/prometheus-cpp.git"
+            },
+            "type": "git"
+         }
       }
    ],
    "Version": 1
